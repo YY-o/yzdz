@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>过期友情人格测试｜后会友期</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  }
+
+  :root {
+    --bg: #f3ede0;
+    --paper: #fbf7ee;
+    --green: #8f9f85;
+    --green-2: #b7c4ab;
+    --brown: #a48b6a;
+    --brown-soft: #d8c9b0;
+    --ink: #4b4237;
+    --ink-soft: #7d7162;
+    --line: #e2d7c2;
+    --warn: #c9a16b;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 20% 10%, rgba(183,196,171,0.25), transparent 26%),
+      radial-gradient(circle at 85% 25%, rgba(200,180,140,0.18), transparent 28%),
+      radial-gradient(circle at 75% 85%, rgba(143,159,133,0.18), transparent 30%),
+      var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 18px 14px 40px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* 背景抽象装饰 */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  body::before {
+    width: 260px;
+    height: 260px;
+    background: rgba(183,196,171,0.35);
+    top: -80px;
+    left: -80px;
+  }
+  body::after {
+    width: 320px;
+    height: 320px;
+    background: rgba(201,161,107,0.22);
+    bottom: -120px;
+    right: -120px;
+  }
+
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 顶部小状态栏 */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(251,247,238,0.72);
+    border: 1px dashed var(--line);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    backdrop-filter: blur(6px);
+  }
+  .top-bar .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    margin-right: 6px;
+    box-shadow: 0 0 0 4px rgba(143,159,133,0.15);
+  }
+
+  /* 页面切换 */
+  .page {
+    display: none;
+    animation: fadeIn 0.45s ease;
+  }
+  .page.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 通用卡片 */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 24px 20px;
+    box-shadow:
+      0 10px 30px rgba(120, 100, 70, 0.12),
+      0 2px 6px rgba(120, 100, 70, 0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    bottom: 14px;
+    width: 4px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--green), var(--green-2));
+  }
+
+  /* 首页 */
+  .home-hero {
+    text-align: center;
+    padding: 10px 4px 18px;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--green-2);
+    border-radius: 999px;
+    background: rgba(183,196,171,0.18);
+    color: #5f725a;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-size: 26px;
+    color: var(--ink);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  h1.title em {
+    font-style: normal;
+    color: var(--green);
+    position: relative;
+  }
+  h1.title em::after {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 4px;
+    height: 8px;
+    background: rgba(183,196,171,0.35);
+    border-radius: 4px;
+    z-index: -1;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  /* 抽象关系插画区 */
+  .orbit {
+    height: 160px;
+    margin: 12px 0 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .orbit svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 标签胶囊 */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .tag {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #edf2e7;
+    color: #5f725a;
+    border: 1px solid var(--green-2);
+  }
+  .tag.warn {
+    background: #f7ead2;
+    color: #a57a42;
+    border-color: var(--brown-soft);
+  }
+
+  /* 按钮 */
+  .btn {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--green);
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(143,159,133,0.35);
+    transition: transform 0.15s ease, background 0.25s ease;
+  }
+  .btn:hover { background: #7c9074; }
+  .btn:active { transform: scale(0.98); }
+
+  /* 题目页 */
+  .question-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .progress-wrap {
+    background: #ece3d2;
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 11%;
+    background: linear-gradient(90deg, var(--green), var(--green-2));
+    border-radius: 999px;
+    transition: width 0.35s ease;
+  }
+  .q-title {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+
+  /* 选项卡 */
+  .opt-item {
+    background: #fbf7ee;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--green-2);
+    border-radius: 14px;
+    padding: 14px 14px 14px 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    position: relative;
+  }
+  .opt-item:hover {
+    background: #f3f7ec;
+    border-color: var(--green);
+    transform: translateX(2px);
+  }
+  .opt-item .opt-order {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .opt-item .opt-text {
+    padding-left: 34px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* 结果页 */
+  .result-card {
+    text-align: center;
+  }
+  .result-avatar {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px;
+    background: linear-gradient(135deg, var(--green), var(--green-2));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(143,159,133,0.35);
+  }
+  .result-name {
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .result-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #edf2e7;
+    color: #5f725a;
+    font-size: 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--green-2);
+  }
+  .result-body {
+    background: #fbf3e4;
+    border: 1px dashed var(--brown-soft);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: left;
+    line-height: 1.8;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .result-tip {
+    background: #f7ead2;
+    border-left: 4px solid var(--warn);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #6f5a3a;
+    margin-bottom: 18px;
+  }
+  .tie-note {
+    background: #fbe9d6;
+    color: #a57a42;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--brown-soft);
+  }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="top-bar">
+    <span><span class="dot"></span>关系诊断中</span>
+    <span>后会友期 · 离线人格检索</span>
+  </div>
+
+  <!-- 首页 -->
+  <section class="page active" id="page-home">
+    <div class="card home-hero">
+      <div class="eyebrow">宇宙搭子离线报告</div>
+      <h1 class="title">同频信号<span em>失联诊断</span></h1>
+      <p class="sub">
+        轨迹交叉之后，有些关系会自然偏移。<br>
+        没有争吵，没有Bug，只是匹配时效到期。
+      </p>
+
+      <div class="orbit">
+        <svg viewBox="0 0 300 160" fill="none">
+          <path d="M20 120 Q 90 40 160 80 T 280 50" stroke="#b7c4ab" stroke-width="1.5" stroke-dasharray="4 4" />
+          <path d="M20 140 Q 110 60 180 100 T 280 90" stroke="#d8c9b0" stroke-width="1" stroke-dasharray="2 6" />
+          <circle cx="70" cy="90" r="14" fill="#8f9f85" />
+          <circle cx="230" cy="60" r="10" fill="#c9a16b" />
+          <circle cx="70" cy="90" r="4" fill="#fbf7ee" />
+          <circle cx="230" cy="60" r="3" fill="#fbf7ee" />
+          <text x="70" y="94" text-anchor="middle" font-size="16" fill="#fff">搭</text>
+          <text x="230" y="64" text-anchor="middle" font-size="14" fill="#fff">子</text>
+        </svg>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">执念型</span>
+        <span class="tag">释然型</span>
+        <span class="tag">和解型</span>
+        <span class="tag">回避型</span>
+      </div>
+
+      <button class="btn" onclick="startTest()">开始测试</button>
+    </div>
+  </section>
+
+  <!-- 题目页 -->
+  <section class="page" id="page-question">
+    <div class="card">
+      <div class="question-head">
+        <span>关系节点 <span id="q-index">1</span> / 9</span>
+        <span>离线诊断进行中</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+      <div class="q-title" id="q-text"></div>
+      <div id="opt-list"></div>
+    </div>
+  </section>
+
+  <!-- 结果页 -->
+  <section class="page" id="page-result">
+    <div class="card result-card">
+      <div class="result-avatar" id="res-emoji">🤖</div>
+      <h2 class="result-name" id="res-name"></h2>
+      <div class="result-tag" id="res-tag"></div>
+      <div class="tie-note" id="tieFenNote"></div>
+      <div class="result-body" id="res-text"></div>
+      <div class="result-tip" id="res-smalltip"></div>
+      <button class="btn" onclick="restart()">重新测一次</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "很久没联系的旧友，突然发来消息邀约见面，你的第一反应？",
+    opts: [
+      { text: "内心翻涌出很多当年没说出口的话，纠结要不要趁这次把心结说清楚", type: "A" },
+      { text: "淡淡感慨，过去早就过去了，可以见，但不会期待太多", type: "B" },
+      { text: "觉得是很好的机会，愿意赴约，希望两个人可以好好聊聊", type: "C" },
+      { text: "下意识想婉拒，不太想重新拾起这段已经停下的关系", type: "D" }
+    ]
+  },
+  {
+    q: "回想当初你们渐行渐远，你更倾向认为是？",
+    opts: [
+      { text: "中间藏着一场没有解开的误会，一直耿耿于怀", type: "A" },
+      { text: "只是人生道路自然分叉，没有谁的错，只是不再同路", type: "B" },
+      { text: "双方当时都不懂怎么沟通，错过了修复关系的时机", type: "C" },
+      { text: "慢慢冷淡是最好的结局，早分开减少后续更多矛盾", type: "D" }
+    ]
+  },
+  {
+    q: "如果重逢聊天，对方提起当年那件让你们产生隔阂的往事，你会？",
+    opts: [
+      { text: "抓住机会，认真说出当年自己委屈的地方，想要一个答案", type: "A" },
+      { text: "轻描淡写带过，不愿反复咀嚼旧情绪", type: "B" },
+      { text: "冷静交流，一起复盘当时双方的想法，争取互相理解", type: "C" },
+      { text: "希望快速跳过这个话题，不想再讨论这件令人难受的往事", type: "D" }
+    ]
+  },
+  {
+    q: "一段友情已经搁置很多年，你还会偷偷留意对方近况吗？",
+    opts: [
+      { text: "偶尔会，心里一直放不下当初那段关系的结局", type: "A" },
+      { text: "偶然刷到会看一眼，但内心早已没有波澜", type: "B" },
+      { text: "如果有机会会愿意了解，但不会主动偷偷去窥探", type: "C" },
+      { text: "不会主动关注，分开之后就选择互不打扰", type: "D" }
+    ]
+  },
+  {
+    q: "你心中一段友情最好的收尾方式是？",
+    opts: [
+      { text: "要有正式的和解或者一个明确的答案，不能不清不楚地消散", type: "A" },
+      { text: "安静退场，不必刻意告别，各自安好就是最好结果", type: "B" },
+      { text: "能解开矛盾最好，就算不能，也体面地好好道别", type: "C" },
+      { text: "无声淡出，不需要专门见面或者对话画上句号", type: "D" }
+    ]
+  },
+  {
+    q: "假如重逢之后发现，你们两个人三观已经完全不一样了，你会？",
+    opts: [
+      { text: "很难接受，会遗憾当初那么要好，如今隔阂这么深", type: "A" },
+      { text: "坦然接受，人本来就是会变的", type: "B" },
+      { text: "尊重彼此变化，好好聊完这一次，然后顺其自然", type: "C" },
+      { text: "更加确定这段关系不适合继续，保持距离", type: "D" }
+    ]
+  },
+  {
+    q: "如果见面之后对方并没有打算和你聊当年的矛盾，只是单纯闲聊叙旧，你会？",
+    opts: [
+      { text: "内心有点失落，还是期待能把当年的心结摊开说一次", type: "A" },
+      { text: "无所谓，闲聊也挺好，不一定非要翻旧账", type: "B" },
+      { text: "先轻松闲聊，观察时机，合适的时候再提起过往", type: "C" },
+      { text: "觉得这样刚刚好，不必再触碰过去矛盾", type: "D" }
+    ]
+  },
+  {
+    q: "假设这次重逢结束，对方提出以后可以常联系，你的想法？",
+    opts: [
+      { text: "会期待，希望慢慢弥补当年错过的友情", type: "A" },
+      { text: "礼貌回应，但心里清楚很难回到从前", type: "B" },
+      { text: "愿意维持淡淡的联系，顺其自然发展", type: "C" },
+      { text: "礼貌应付，后续不会主动开启聊天", type: "D" }
+    ]
+  },
+  {
+    q: "多年过去，回头看这段友情，你最大的情绪是？",
+    opts: [
+      { text: "遗憾，如果当初做出不同选择结果或许不同", type: "A" },
+      { text: "感恩曾经相伴，离别只是人生常态", type: "B" },
+      { text: "可惜，但如果有机会依然愿意和解", type: "C" },
+      { text: "觉得走到散场就是这段关系注定的终点", type: "D" }
+    ]
+  }
+];
+
+const results = {
+  A: {
+    emoji: "🔁",
+    name: "执念型",
+    tag: "标签：困于旧答案，心底画地为牢",
+    desc: "你属于心里很难轻易放下遗憾的一类人。曾经要好的朋友慢慢走散这件事，在你心里一直悬着，你常常会设想，如果当初好好沟通，结局会不会不一样。你期待一场重逢，本质上不是非要继续做朋友，而是想要当年那个迟迟没有到来的解释。你一直困在过去的情绪里面，等待一句答复。",
+    tip: "💡小提示：很多故事本就没有标准答案，有时候放过回忆，也是放过自己。"
+  },
+  B: {
+    emoji: "🍂",
+    name: "释然型",
+    tag: "标签：往事翻篇，体面独行",
+    desc: "你早已接受友情是阶段性这件事。想起曾经的好友，你还能记得当初相处的美好，但不会为已经走散的关系内耗。就算再次见面，你可以温和交谈，却不会再期盼回到当初亲密的模样。人生本就是不断有人来，有人离开，分叉只是常态，你已经与这段过期的友情和解，不再纠结对错。",
+    tip: "💡小提示：能坦然接纳离别，本身也是一种强大。"
+  },
+  C: {
+    emoji: "🤝",
+    name: "和解型",
+    tag: "标签：愿意沟通，尽力不留遗憾",
+    desc: "你是最愿意给旧友情一次机会的人格。如果有重逢的机会，你愿意坐下来，平静聊聊当年发生的一切。你不强求一定要变回最好的朋友，但你不想带着误解一直错过。你认为人与人之间的隔阂大多来自缺少沟通，能解开就解开，若是最后依旧无法同行，也能不留遗憾地好好告别。",
+    tip: "💡小提示：你一直保有真诚沟通的勇气，很难得。"
+  },
+  D: {
+    emoji: "☁️",
+    name: "回避型",
+    tag: "标签：不愿重逢，断联即是归宿",
+    desc: "对于已经走向终点的友情，你的选择是不回头。你明白再见面很可能只会徒增尴尬或是再次勾起不愉快的回忆，比起勉强见面，你更愿意保持现在互不打扰的状态。不是怨恨对方，只是你觉得关系既然已经走到这里，最好的选择就是到此为止，不必强行重启。",
+    tip: "💡小提示：回避不是胆小，只是你清楚哪些关系不必再勉强。"
+  }
+};
+
+let current = 0;
+let count = { A: 0, B: 0, C: 0, D: 0 };
+let lock = false;
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function startTest() {
+  current = 0;
+  count = { A: 0, B: 0, C: 0, D: 0 };
+  lock = false;
+  renderQ();
+  showPage("page-question");
+}
+
+function renderQ() {
+  lock = false;
+  const item = questions[current];
+  document.getElementById("q-index").innerText = current + 1;
+  document.getElementById("progress").style.width = ((current + 1) / 9 * 100) + "%";
+  document.getElementById("q-text").innerText = item.q;
+
+  const orderMap = { A: 1, B: 2, C: 3, D: 4 };
+  let html = "";
+  item.opts.forEach(o => {
+    html += `
+      <div class="opt-item" onclick="selectOpt('${o.type}')">
+        <span class="opt-order">${orderMap[o.type]}</span>
+        <div class="opt-text">${o.text}</div>
+      </div>`;
+  });
+  document.getElementById("opt-list").innerHTML = html;
+}
+
+function selectOpt(type) {
+  if (lock) return;
+  lock = true;
+  count[type]++;
+  current++;
+  setTimeout(() => {
+    if (current >= questions.length) {
+      showResult();
+    } else {
+      renderQ();
+    }
+  }, 220);
+}
+
+function showResult() {
+  const arr = [
+    { t: "A", v: count.A },
+    { t: "B", v: count.B },
+    { t: "C", v: count.C },
+    { t: "D", v: count.D }
+  ];
+  arr.sort((a, b) => b.v - a.v);
+
+  const topVal = arr[0].v;
+  const tops = arr.filter(x => x.v === topVal);
+
+  let noteText = "";
+  let mainType;
+  if (tops.length > 1) {
+    mainType = tops[0].t;
+    const nameMap = { A: "执念型", B: "释然型", C: "和解型", D: "回避型" };
+    const names = tops.map(i => nameMap[i.t]);
+    noteText = "你的结果同分，性格介于【" + names.join(" / ") + "】之间";
+  } else {
+    mainType = tops[0].t;
+  }
+
+  const r = results[mainType];
+  document.getElementById("res-emoji").innerText = r.emoji;
+  document.getElementById("res-name").innerText = r.name;
+  document.getElementById("res-tag").innerText = r.tag;
+  document.getElementById("tieFenNote").innerText = noteText;
+  document.getElementById("res-text").innerText = r.desc;
+  document.getElementById("res-smalltip").innerText = r.tip;
+
+  showPage("page-result");
+}
+
+function restart() {
+  showPage("page-home");
+}
+</script>
+</body>
+</html>
